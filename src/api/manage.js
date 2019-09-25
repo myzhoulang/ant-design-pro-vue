@@ -1,62 +1,77 @@
 import { axios } from '@/utils/request'
 
 const api = {
-  user: '/user',
-  role: '/role',
-  service: '/service',
-  permission: '/permission',
-  permissionNoPager: '/permission/no-pager',
-  orgTree: '/org/tree'
+  stopTimeList: '/page/stop/getStopTimeList.htm',
+  getStopTime: '/page/stop/getStopTimeByPageType.htm',
+  getClickTimeByButtonType: '/button/click/getClickTimeByButtonType.htm',
+  getClickTimeByQA: '/button/click/getClickTimeByQA.htm',
+  getAppUserList: '/user/getAppUserList.htm',
+  getUserResultByUserId: '/userResult/getUserResultByUserId.htm',
+  getUserResultDetail: '/userResult/getUserResultDetail.htm',
+  getProductOrderList: '/order/getProductOrderList.htm'
 }
 
 export default api
 
-export function getUserList (parameter) {
+export function getProductOrderList (parameter) {
   return axios({
-    url: api.user,
-    method: 'get',
+    url: api.getProductOrderList,
+    method: 'post',
     params: parameter
   })
 }
 
-export function getRoleList (parameter) {
+export function getUserResultDetail (parameter) {
   return axios({
-    url: api.role,
-    method: 'get',
+    url: api.getUserResultDetail,
+    method: 'post',
     params: parameter
   })
 }
 
-export function getServiceList (parameter) {
+export function getUserResultByUserId (parameter) {
   return axios({
-    url: api.service,
-    method: 'get',
+    url: api.getUserResultByUserId,
+    method: 'post',
+    params: parameter
+  })
+}
+export function getAppUserList (parameter) {
+  return axios({
+    url: api.getAppUserList,
+    method: 'post',
+    params: parameter
+  })
+} 
+
+export function getClickTimeByQA (parameter) {
+  return axios({
+    url: api.getClickTimeByQA,
+    method: 'post',
     params: parameter
   })
 }
 
-export function getPermissions (parameter) {
+export function getStopTimeList (parameter) {
   return axios({
-    url: api.permissionNoPager,
-    method: 'get',
+    url: api.stopTimeList,
+    method: 'post',
     params: parameter
   })
 }
 
-export function getOrgTree (parameter) {
+export function getStopTime (parameter) {
   return axios({
-    url: api.orgTree,
-    method: 'get',
+    url: api.getStopTime,
+    method: 'post',
     params: parameter
   })
 }
 
-// id == 0 add     post
-// id != 0 update  put
-export function saveService (parameter) {
+export function getClickTimeByButtonType (parameter) {
   return axios({
-    url: api.service,
-    method: parameter.id === 0 ? 'post' : 'put',
-    data: parameter
+    url: api.getClickTimeByButtonType,
+    method: 'post',
+    parameter: parameter
   })
 }

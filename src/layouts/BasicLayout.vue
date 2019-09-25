@@ -70,6 +70,7 @@ import SideMenu from '@/components/Menu/SideMenu'
 import GlobalHeader from '@/components/GlobalHeader'
 import GlobalFooter from '@/components/GlobalFooter'
 import SettingDrawer from '@/components/SettingDrawer'
+import { asyncRouterMap } from '@/config/router.config.js'
 
 export default {
   name: 'BasicLayout',
@@ -109,9 +110,10 @@ export default {
     }
   },
   created () {
-    this.menus = this.mainMenu.find(item => item.path === '/').children
-    this.collapsed = !this.sidebarOpened
-  },
+  this.menus = asyncRouterMap.find((item) => item.path === '/').children
+  // this.menus = this.mainMenu.find((item) => item.path === '/').children
+  this.collapsed = !this.sidebarOpened
+},
   mounted () {
     const userAgent = navigator.userAgent
     if (userAgent.indexOf('Edge') > -1) {

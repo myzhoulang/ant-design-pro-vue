@@ -4,7 +4,7 @@
       <div class="table-page-search-wrapper">
         <a-form layout="inline">
           <a-row :gutter="48">
-            <a-col :md="8" :sm="24">
+            <a-col :md="12" :xl="8" :sm="24">
               <a-form-item label="时间范围">
                 <a-range-picker v-model="queryParam.date" style="width: 100%"/>
               </a-form-item>
@@ -12,9 +12,8 @@
             <a-col :md="8" :sm="24">
               <span class="table-page-search-submitButtons">
                 <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
-                <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
-                <a-button style="margin-left: 8px" icon="download">导出</a-button>
-                <a-button style="margin-left: 8px" icon="question-circle">字段说明</a-button>
+                <!-- <a-button style="margin-left: 8px" icon="download">导出</a-button> -->
+                <!-- <a-button style="margin-left: 8px" icon="question-circle">字段说明</a-button> -->
               </span>
             </a-col>
           </a-row>
@@ -28,11 +27,6 @@
         :columns="columns"
         :data="loadData"
       >
-        <span slot="action" slot-scope="text, record">
-          <template>
-            <a @click="handleEdit(record)">详情</a>
-          </template>
-        </span>
       </s-table>
     </a-card>
   </div>
@@ -41,7 +35,7 @@
 <script>
 import moment from 'moment'
 import { STable } from '@/components'
-import { getRoleList, getServiceList } from '@/api/manage'
+import { getClickTimeByQA } from '@/api/manage'
 export default {
   name: 'Test',
   components: {
@@ -55,48 +49,52 @@ export default {
       columns: [
         {
           title: '统计内容',
-          dataIndex: 'no'
+          dataIndex: 'name'
         },
         {
           title: '所属',
-          dataIndex: 'description'
+          dataIndex: ''
         },
         {
           title: '累计数量',
-          dataIndex: 'callNo',
-          customRender: (text) => text + ' 次'
+          dataIndex: 'pv'
         },
         {
           title: '累计人数',
-          dataIndex: 'status',
-          needTotal: true
+          dataIndex: 'uv'
         },
         {
           title: '累计数量（新）',
-          dataIndex: 'updatedAt'
+          dataIndex: 'newpv'
         },
         {
           title: '累计人数（新）',
-          dataIndex: 'updatedAt'
+          dataIndex: 'newuv'
         },
         {
           title: '累计数量（老）',
-          dataIndex: 'updatedAt'
+          dataIndex: 'oldpv'
         },
         {
           title: '累计人数（老）',
-          dataIndex: 'updatedAt'
-        },
-        {
-          title: '备注',
-          dataIndex: 'updatedAt'
+          dataIndex: 'olduv'
         }
       ],
       loadData: parameter => {
-        console.log('loadData.parameter', parameter)
-        return getServiceList(Object.assign(parameter, this.queryParam))
+        let startTime
+        let endTime
+        if(Array.isArray(this.queryParam.date)){
+          startTime = this.queryParam.date[0].format('YYYY-MM-DD hh:mm:ss')
+          endTime = this.queryParam.date[1].format('YYYY-MM-DD hh:mm:ss')
+        }
+        
+        delete this.queryParam.date
+        return getClickTimeByQA(Object.assign(parameter, this.queryParam, {
+            startTime,
+            endTime
+          }))
           .then(res => {
-            return res.result
+            return res
           })
       }
     }

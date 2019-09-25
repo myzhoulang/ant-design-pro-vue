@@ -37,7 +37,9 @@ const user = {
     Login ({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
-          const result = response.result
+          const result = response.data
+
+          result.token = '11111111'
           Vue.ls.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000)
           commit('SET_TOKEN', result.token)
           resolve()
@@ -70,7 +72,7 @@ const user = {
           }
 
           commit('SET_NAME', { name: result.name, welcome: welcome() })
-          commit('SET_AVATAR', result.avatar)
+          commit('SET_AVATAR', result.avatar || '')
 
           resolve(response)
         }).catch(error => {
@@ -93,7 +95,6 @@ const user = {
         })
       })
     }
-
   }
 }
 

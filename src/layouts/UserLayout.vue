@@ -4,8 +4,7 @@
       <div class="top">
         <div class="header">
           <a href="/">
-            <img src="~@/assets/logo.svg" class="logo" alt="logo">
-            <span class="title">平安保险</span>
+            <span class="title">中国平安保险</span>
           </a>
         </div>
         <div class="desc">平台后台管理系统</div>
@@ -14,11 +13,6 @@
       <route-view></route-view>
 
       <div class="footer">
-        <div class="links">
-          <a href="_self">帮助</a>
-          <a href="_self">隐私</a>
-          <a href="_self">条款</a>
-        </div>
         <div class="copyright">版权所有 © 中国平安保险（集团）股份有限公司</div>
       </div>
     </div>
