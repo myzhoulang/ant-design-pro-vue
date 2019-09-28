@@ -3,8 +3,7 @@
     <a-card :bordered="false">
       <s-table
         ref="table"
-        size="default"
-        rowKey="key"
+        rowKey="id"
         :showPagination="false"
         :columns="columns"
         :data="loadData"
@@ -90,7 +89,6 @@ export default {
         userId: params.id,
         id: record.id
       }).then(result => {
-
         let dataSource = {};
         for(let item of result.data) {
           dataSource[item.questionName] = result.data.filter(item2 => item2.questionName === item.questionName).map(item => item.answerName)

@@ -4,7 +4,7 @@
       <div class="table-page-search-wrapper">
         <a-form layout="inline">
           <a-row :gutter="48">
-            <a-col :md="16" :sm="24">
+            <a-col :md="12" :xl="10" :xxl="6" :sm="24">
               <a-form-item label="时间范围">
                 <a-range-picker v-model="queryParam.date" style="width: 100%"/>
               </a-form-item>
@@ -12,7 +12,7 @@
             <a-col :md="8" :sm="24">
               <span class="table-page-search-submitButtons">
                 <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
-                <a-button style="margin-left: 8px" icon="download">导出</a-button>
+                <!-- <a-button style="margin-left: 8px" icon="download">导出</a-button> -->
               </span>
             </a-col>
           </a-row>
@@ -57,29 +57,28 @@ export default {
         },
         {
           title: '被投保人',
-          dataIndex: 'description'
+          dataIndex: 'insuredPerson'
         },
         {
-          title: '被投保人姓名',
-          dataIndex: 'callNo',
-          customRender: (text) => text + ' 次'
+          title: '被投保人性别',
+          dataIndex: 'sex',
+          customRender: text =>  ({1: '男', 0: '女'})[text]
         },
         {
           title: '年龄',
-          dataIndex: 'status',
-          needTotal: true
+          dataIndex: 'age',
         },
         {
           title: '保额',
-          dataIndex: 'updatedAt'
+          dataIndex: 'insuredAmount'
         },
         {
           title: '手机后四位',
-          dataIndex: 'updatedAt'
+          dataIndex: 'phone'
         },
         {
           title: '工号',
-          dataIndex: 'updatedAt'
+          dataIndex: 'userId'
         }
       ],
       loadData: parameter => {
@@ -98,7 +97,11 @@ export default {
           })
         )
         .then(res => {
-          return res
+          return {
+            data: res.data,
+            pageNo: res.pageNo,
+            totalCount: res.count
+          }
         })
       }
     }

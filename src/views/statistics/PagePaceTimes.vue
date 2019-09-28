@@ -4,7 +4,7 @@
       <div class="table-page-search-wrapper">
         <a-form layout="inline">
           <a-row :gutter="48">
-            <a-col :md="16" :xl="8" :sm="24">
+            <a-col :md="12" :xl="10" :xxl="6" :sm="24">
               <a-form-item label="时间范围">
                 <a-range-picker :showTime="true" v-model="queryParam.date" style="width: 100%" />
               </a-form-item>
@@ -22,7 +22,6 @@
 
       <s-table
         ref="table"
-        size="default"
         rowKey="name"
         :showPagination="false"
         :columns="columns"
@@ -63,15 +62,14 @@ export default {
           customRender: t => {
             let text = parseInt(t)
             const h = ~~(text / 60 / 60)
-            const m = ~~((text - h * 60) / 60)
-            const s = text - (h * 60 + m * 60)
+            const m = ~~((text - h * 60 * 60) / 60)
+            const s = text - (h * 60 * 60 + m * 60)
             return `${h}时${m}分${s}秒`
           }
         },
         {
           title: '停留人次',
-          dataIndex: 'pv',
-          customRender: text => text + ' 次'
+          dataIndex: 'pv'
         },
         {
           title: '停留人数',
@@ -79,7 +77,12 @@ export default {
         },
         {
           title: '平均停留时间（人次）',
-          dataIndex: 'avgpv'
+          dataIndex: 'avgpv',
+          customRender: t => {
+            const time = parseFloat(t);
+
+            return time.toFixed(3);
+          }
         },
         {
           title: '操作',

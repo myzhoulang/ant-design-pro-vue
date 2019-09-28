@@ -4,7 +4,7 @@
       <div class="table-page-search-wrapper">
         <a-form layout="inline">
           <a-row :gutter="48">
-            <a-col :md="12" :xl="8" :sm="24">
+            <a-col :md="12" :xl="10" :xxl="6" :sm="24">
               <a-form-item label="时间范围">
                 <a-range-picker v-model="queryParam.date" style="width: 100%"/>
               </a-form-item>
@@ -23,7 +23,8 @@
       <s-table
         ref="table"
         size="default"
-        rowKey="key"
+        rowKey="code"
+        :showPagination="false"
         :columns="columns"
         :data="loadData"
       >

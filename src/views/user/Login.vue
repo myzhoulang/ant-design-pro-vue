@@ -104,8 +104,6 @@ export default {
         }
       })
     },
-   
-    
     
     loginSuccess (res) {
       this.$router.push({ path: '/statistics/page-pace-times' })

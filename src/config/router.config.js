@@ -30,7 +30,7 @@ export const asyncRouterMap = [
             path: '/statistics/page-pace-times/detail',
             name: 'PagePaceTime',
             component: () => import('@/views/statistics/PagePaceTime'),
-            meta: { keepAlive: false, hiddenHeaderContent: true }
+            meta: { keepAlive: false, title: '页面停留详情' }
           },
           {
             path: '/statistics/quantity',
@@ -51,7 +51,7 @@ export const asyncRouterMap = [
         path: '/sale',
         name: 'SaleSetting',
         redirect: '/sale/product',
-        component: RouteView,
+        component: PageView,
         meta: { title: '销售设置', icon: 'form', keepAlive: true },
         children: [
           {
@@ -72,7 +72,7 @@ export const asyncRouterMap = [
       {
         path: '/customers',
         name: 'Customers',
-        component: RouteView,
+        component: PageView,
         rediect: '/customers/customer-list',
         meta: { title: '客户管理', keepAlive: true, icon: 'team' },
         children: [
@@ -97,7 +97,7 @@ export const asyncRouterMap = [
         path: '/orders',
         name: 'Orders',
         redirect: '/orders/big-lucky-star',
-        component: RouteView,
+        component: PageView,
         meta: { title: '订单管理', keepAlive: true, icon: 'table' },
         children: [
           {
@@ -133,19 +133,19 @@ export const asyncRouterMap = [
         name: 'exception',
         component: RouteView,
         redirect: '/exception/403',
-        meta: { title: '异常页', icon: 'warning', permission: [ 'exception' ] },
+        meta: { title: '异常页', icon: 'warning' },
         children: [
           {
             path: '/exception/403',
             name: 'Exception403',
             component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/403'),
-            meta: { title: '403', permission: [ 'exception' ] }
+            meta: { title: '403' }
           },
           {
             path: '/exception/500',
             name: 'Exception500',
             component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/500'),
-            meta: { title: '500', permission: [ 'exception' ] }
+            meta: { title: '500' }
           }
         ]
       }

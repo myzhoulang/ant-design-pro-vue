@@ -1,10 +1,10 @@
 <template>
   <div>
-    <a-card :bordered="false">
+    <a-card :bordered="false" size="middle">
       <div class="table-page-search-wrapper">
         <a-form layout="inline">
           <a-row :gutter="48">
-            <a-col :md="12" :xl="8" :sm="24">
+            <a-col :md="12" :xl="10" :xxl="6" :sm="24">
               <a-form-item label="时间范围">
                 <a-range-picker v-model="queryParam.date" style="width: 100%" />
               </a-form-item>
@@ -21,7 +21,13 @@
         </a-form>
       </div>
 
-      <s-table ref="table" size="default" rowKey="key" :columns="columns" :data="loadData"></s-table>
+      <s-table 
+        ref="table" 
+        size="default" 
+        :showPagination="false"
+        rowKey="code" 
+        :columns="columns" 
+        :data="loadData"></s-table>
     </a-card>
   </div>
 </template>
@@ -43,11 +49,13 @@ export default {
       columns: [
         {
           title: '统计内容',
-          dataIndex: 'name'
+          dataIndex: 'name',
+          width: '12%'
         },
         {
           title: '所属',
-          dataIndex: ''
+          dataIndex: '',
+          width: '8%'
         },
         {
           title: '累计数量',
@@ -86,7 +94,7 @@ export default {
         delete this.queryParam.date
         return getClickTimeByButtonType(
           Object.assign(parameter, this.queryParam, {
-            pageSize: 1000,
+            pageSize: 100,
             startTime,
             endTime
           })

@@ -1,36 +1,37 @@
 <template>
   <a-card>
-    <a-table
-      :columns="columns"
-      :dataSource="data"
-      :pagination="false"
-      :loading="memberLoading"
-    >
-      <template slot="title"></template>
-      <template v-for="(col, i) in ['question', 'answer', 'link']" :slot="col" slot-scope="text, record">
-        <a-textarea
-          :key="col"
-          v-if="record.editable"
-          style="margin: -5px 0"
-          :value="text"
-          :placeholder="columns[i].title"
-          @change="e => handleChange(e.target.value, record.key, col)"
-        />
-        <template v-else>{{ text }}</template>
+    <s-table 
+      ref="table" 
+      rowKey="id" 
+      :showPagination="false"
+      :columns="columns" 
+      :data="loadData">
+
+      <template slot="helpQuestion" slot-scope="text">
+        <a-tooltip placement="top" >
+          <span><ellipsis :length="20" tooltip>{{ text }}</ellipsis></span>
+        </a-tooltip>
       </template>
-      <template slot="operation" slot-scope="text, record">
-        <template v-if="record.editable">
+      <template slot="helpAnswer" slot-scope="text">
+        <a-tooltip placement="top" >
           <span>
-            <a @click="saveRow(record)">保存</a>
-            <a-divider type="vertical" />
-            <a @click="cancel(record.key)">取消</a>
+            <ellipsis :length="20" tooltip>{{ text }}</ellipsis>
           </span>
-        </template>
-        <span v-else>
-          <a @click="showModal(record)">编辑</a>
-        </span>
+        </a-tooltip>
       </template>
-    </a-table>
+      <template slot="helpUrl" slot-scope="text">
+        <a-tooltip placement="top" >
+          <span><ellipsis :length="20" tooltip>{{ text }}</ellipsis></span>
+        </a-tooltip>
+      </template>
+
+      <span slot="action" slot-scope="text, record">
+        <template>
+          <a @click="showModal(record)">编辑</a>
+        </template>
+      </span>
+    </s-table>
+
 
     <!--表单-->
     <a-modal
@@ -45,14 +46,15 @@
         <a-form-item
           label="问题"
           :label-col="{ span: 5 }"
-          :wrapper-col="{ span: 12 }"
+          :wrapper-col="{ span: 17 }"
         >
+        <!-- rules: [{ required: true, message: '请输入问题' }], -->
           <a-textarea
+            :style="{height: '120px'}"
             placeholder="在此输入问题"
             v-decorator="[
-              'question',
+              'helpQuestion',
               {
-                rules: [{ required: true, message: '请输入问题' }],
                 initialValue: question.question
               }
             ]"
@@ -61,13 +63,14 @@
         <a-form-item
           label="答案"
           :label-col="{ span: 5 }"
-          :wrapper-col="{ span: 12 }"
+          :wrapper-col="{ span: 17 }"
         >
+         <!-- rules: [{ required: true, message: '请输入答案' }], -->
           <a-textarea
+            :style="{height: '120px'}"
             v-decorator="[
-              'answer',
+              'helpAnswer',
               {
-                rules: [{ required: true, message: '请输入答案' }],
                 initialValue: question.answer
               }
             ]"
@@ -77,13 +80,14 @@
         <a-form-item
           label="链接"
           :label-col="{ span: 5 }"
-          :wrapper-col="{ span: 12 }"
+          :wrapper-col="{ span: 17 }"
         >
+        <!-- rules: [{ required: true, message: '请输入链接' }], -->
           <a-textarea
+            :style="{height: '40px'}"
             v-decorator="[
-              'link',
+              'helpUrl',
               {
-                rules: [{ required: true, message: '请输入链接' }],
                 initialValue: question.link
               }
             ]"
@@ -95,8 +99,14 @@
 </template>
 
 <script>
+import { STable, Ellipsis } from '@/components'
+import { getHelpList, editHelp } from '@/api/manage'
 export default {
   name: 'Question',
+  components: {
+    STable,
+    Ellipsis,
+  },
   data () {
     return {
       memberLoading: false,
@@ -104,133 +114,77 @@ export default {
       showEdit: false,
       formLayout: 'horizontal',
       form: this.$form.createForm(this),
-      data: [
-        {
-          title: '安心百分百-1',
-          key: 'axbfb1',
-          question: '小明',
-          answer: '001',
-          link: ''
-        },
-        {
-          title: '安心百分百-2',
-          key: 'axbfb2',
-          question: '小明',
-          answer: '0012',
-          link: ''
-        },
-        {
-          title: '安心百分百-3',
-          key: 'axbfb3',
-          question: '小明',
-          answer: '0013',
-          link: ''
-        },
-        {
-          title: '安心百分百-4',
-          key: 'axbfb4',
-          question: '小明',
-          answer: '001',
-          link: ''
-        },
-        {
-          title: '安心百分百-5',
-          key: 'axbfb5',
-          question: '小明',
-          answer: '001',
-          link: ''
-        },
-        {
-          title: '安心百分百-6',
-          key: 'axbfb6',
-          question: '小明',
-          answer: '001',
-          link: ''
-        },
-        {
-          title: '大小福星-1',
-          key: 'dxfx1',
-          question: '小明',
-          answer: '001',
-          link: ''
-        },
-        {
-          title: '大小福星-2',
-          key: 'dxfx2',
-          question: '小明',
-          answer: '001',
-          link: ''
-        },
-        {
-          title: '大小福星-3',
-          key: 'dxfx3',
-          question: '小明',
-          answer: '001',
-          link: ''
-        },
-        {
-          title: '大小福星-4',
-          key: 'dxfx4',
-          question: '小明',
-          answer: '001',
-          link: ''
-        },
-        {
-          title: '大小福星-5',
-          key: 'dxfx5',
-          question: '小明',
-          answer: '001',
-          link: ''
-        },
-        {
-          title: '大小福星-6',
-          key: 'dxfx6',
-          question: '小明',
-          answer: '001',
-          link: ''
-        }
+      data: [ 
       ],
       columns: [
         {
           title: '常见问题帮助',
-          dataIndex: 'title',
-          key: 'title',
+          dataIndex: 'productName',
+          key: 'productName',
           width: '15%'
         },
         {
           title: '问题',
-          dataIndex: 'question',
-          key: 'question',
+          dataIndex: 'helpQuestion',
+          key: 'helpQuestions',
           width: '25%',
-          scopedSlots: { customRender: 'question' }
+          scopedSlots: { customRender: 'helpQuestion' }
         },
         {
           title: '答案',
-          dataIndex: 'answer',
-          key: 'answer',
+          dataIndex: 'helpAnswer',
+          key: 'helpAnswer',
           width: '25%',
-          scopedSlots: { customRender: 'answer' }
+          scopedSlots: { customRender: 'helpAnswer' }
         },
         {
           title: '链接',
-          dataIndex: 'link',
-          key: 'link',
+          dataIndex: 'helpUrl',
+          key: 'helpUrl',
           width: '25%',
-          scopedSlots: { customRender: 'link' }
+          scopedSlots: { customRender: 'helpUrl' }
         },
         {
           title: '操作',
           key: 'action',
-          scopedSlots: { customRender: 'operation' }
+          scopedSlots: { customRender: 'action' }
         }
-      ]
+      ],
+      loadData: parameter => {
+        return getHelpList(
+          Object.assign(parameter)
+        ).then(res => {
+          return res
+        })
+      }
     }
   },
   methods: {
-    changeValue () {},
+    changeValue () {
+      this.form.validateFields(async (err, values) => {
+        if (!err) {
+          const data = await editHelp({
+            ...values,
+            id: this.question.id
+          });
+
+          if(data.status === 200){
+            this.showEdit = false
+            this.$refs.table.refresh()
+          }
+        }
+      })
+    },
     showModal (question) {
       this.showEdit = true
       this.question = question
+      this.$nextTick(() => {
+        this.form.setFieldsValue({
+          helpQuestion: question.helpQuestion,
+          helpAnswer: question.helpAnswer,
+          helpUrl: question.helpUrl
+        })
+      })
     },
     cancel () {
       this.showEdit = false
