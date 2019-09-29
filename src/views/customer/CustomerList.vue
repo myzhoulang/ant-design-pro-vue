@@ -39,7 +39,7 @@ export default {
   components: {
     STable
   },
-  data() {
+  data () {
     return {
       // 查询参数
       queryParam: {},
@@ -60,7 +60,7 @@ export default {
         {
           title: '注册时间',
           dataIndex: 'registerDate',
-          customRender(text) {
+          customRender (text) {
             return moment(text).format('YYYY-MM-DD')
           }
         },
@@ -74,9 +74,9 @@ export default {
       loadData: parameter => {
         let startTime
         let endTime
-        if (Array.isArray(this.queryParam.date)) {
-          startTime = this.queryParam.date[0].format('YYYY-MM-DD hh:mm:ss')
-          endTime = this.queryParam.date[1].format('YYYY-MM-DD hh:mm:ss')
+        if (Array.isArray(this.queryParam.date) && this.queryParam.date.length > 0) {
+          startTime = this.queryParam.date[0].format('YYYY-MM-DD')
+          endTime = this.queryParam.date[1].format('YYYY-MM-DD')
         }
 
         delete this.queryParam.date

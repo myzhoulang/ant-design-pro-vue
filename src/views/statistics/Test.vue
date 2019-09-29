@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { STable } from '@/components'
 import { getClickTimeByQA } from '@/api/manage'
 export default {
@@ -84,16 +83,16 @@ export default {
       loadData: parameter => {
         let startTime
         let endTime
-        if(Array.isArray(this.queryParam.date)){
-          startTime = this.queryParam.date[0].format('YYYY-MM-DD hh:mm:ss')
-          endTime = this.queryParam.date[1].format('YYYY-MM-DD hh:mm:ss')
+        if (Array.isArray(this.queryParam.date) && this.queryParam.date.length > 0) {
+          startTime = this.queryParam.date[0].format('YYYY-MM-DD')
+          endTime = this.queryParam.date[1].format('YYYY-MM-DD')
         }
-        
+
         delete this.queryParam.date
         return getClickTimeByQA(Object.assign(parameter, this.queryParam, {
-            startTime,
-            endTime
-          }))
+          startTime,
+          endTime
+        }))
           .then(res => {
             return res
           })

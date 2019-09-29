@@ -6,7 +6,7 @@
           <a-row :gutter="48">
             <a-col :md="12" :xl="10" :xxl="6" :sm="24">
               <a-form-item label="时间范围">
-                <a-range-picker :showTime="true" v-model="queryParam.date" style="width: 100%" />
+                <a-range-picker v-model="queryParam.date" style="width: 100%" />
               </a-form-item>
             </a-col>
             <a-col :md="12" :xl="8" :sm="24">
@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { STable } from '@/components'
 import { getStopTimeList } from '@/api/manage'
 export default {
@@ -46,7 +45,7 @@ export default {
   components: {
     STable
   },
-  data() {
+  data () {
     return {
       // 查询参数
       queryParam: {},
@@ -60,7 +59,7 @@ export default {
           title: '累计停留时间',
           dataIndex: 'total',
           customRender: t => {
-            let text = parseInt(t)
+            const text = parseInt(t)
             const h = ~~(text / 60 / 60)
             const m = ~~((text - h * 60 * 60) / 60)
             const s = text - (h * 60 * 60 + m * 60)
@@ -79,9 +78,8 @@ export default {
           title: '平均停留时间（人次）',
           dataIndex: 'avgpv',
           customRender: t => {
-            const time = parseFloat(t);
-
-            return time.toFixed(3);
+            const time = parseFloat(t)
+            return time.toFixed(3)
           }
         },
         {
@@ -94,9 +92,9 @@ export default {
       loadData: parameter => {
         let startTime
         let endTime
-        if (Array.isArray(this.queryParam.date)) {
-          startTime = this.queryParam.date[0].format('YYYY-MM-DD hh:mm:ss')
-          endTime = this.queryParam.date[1].format('YYYY-MM-DD hh:mm:ss')
+        if (Array.isArray(this.queryParam.date) && this.queryParam.date.length > 0) {
+          startTime = this.queryParam.date[0].format('YYYY-MM-DD')
+          endTime = this.queryParam.date[1].format('YYYY-MM-DD')
         }
 
         delete this.queryParam.date

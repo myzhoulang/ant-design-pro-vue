@@ -1,11 +1,11 @@
 <template>
   <a-card :body-style="{padding: '24px 32px'}" :bordered="false">
 
-    <s-table 
-      ref="table" 
-      rowKey="id" 
+    <s-table
+      ref="table"
+      rowKey="id"
       :showPagination="false"
-      :columns="columns" 
+      :columns="columns"
       :data="loadData">
       <span slot="action" slot-scope="text, record">
         <template>
@@ -13,7 +13,6 @@
         </template>
       </span>
     </s-table>
-
 
     <!--表单-->
     <a-modal
@@ -30,7 +29,7 @@
           :label-col="{ span: 5 }"
           :wrapper-col="{ span: 12 }"
         >
-          <a-input-number 
+          <a-input-number
             :style="{width: '200px'}"
             placeholder="选择人数"
             v-decorator="[
@@ -62,21 +61,21 @@ export default {
   name: 'ProductSetting',
   components: {
     STable,
-    Ellipsis,
+    Ellipsis
   },
   data () {
     return {
       product: {},
       showEdit: false,
       columns: [
-        {title: '产品', dataIndex: 'productName'},
-        {title: '选择人数', dataIndex: 'applyNum'},
-        {title: '承保人数', dataIndex: 'insureNum'},
-        { 
+        { title: '产品', dataIndex: 'productName' },
+        { title: '选择人数', dataIndex: 'applyNum' },
+        { title: '承保人数', dataIndex: 'insureNum' },
+        {
           title: '操作',
           key: 'action',
           scopedSlots: { customRender: 'action' }
-        },
+        }
       ],
       form: this.$form.createForm(this),
       loadData: parameter => {
@@ -89,32 +88,32 @@ export default {
     }
   },
   methods: {
-    showModal(product){
+    showModal (product) {
       this.showEdit = true
       this.product = product
       this.$nextTick(() => {
         this.form.setFieldsValue({
           insureNum: product.insureNum,
-          applyNum: product.applyNum,
+          applyNum: product.applyNum
         })
       })
     },
-    changeValue(){
+    changeValue () {
       this.form.validateFields(async (err, values) => {
         if (!err) {
           const data = await editIProduct({
             ...values,
             id: this.product.id
-          });
+          })
 
-          if(data.status === 200){
+          if (data.status === 200) {
             this.showEdit = false
             this.$refs.table.refresh()
           }
         }
       })
     },
-    cancel(){
+    cancel () {
       this.showEdit = false
     }
   }

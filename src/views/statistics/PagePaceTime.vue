@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { STable } from '@/components'
 import { getStopTime } from '@/api/manage'
 export default {
@@ -22,7 +21,7 @@ export default {
   components: {
     STable
   },
-  data() {
+  data () {
     return {
       // 表头
       columns: [],
@@ -42,11 +41,11 @@ export default {
           })
 
           this.columns.unshift({ title: '页面名', dataIndex: 'name' })
-          let data = []
-          let names = ['uv', 'pv']
-          let titles = ['人数', '人次']
+          const data = []
+          const names = ['uv', 'pv']
+          const titles = ['人数', '人次']
           for (let i = 0; i < 2; i++) {
-            let j = {
+            const j = {
               name: titles[i]
             }
             res.data.forEach(item => {

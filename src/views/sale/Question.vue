@@ -1,10 +1,10 @@
 <template>
   <a-card>
-    <s-table 
-      ref="table" 
-      rowKey="id" 
+    <s-table
+      ref="table"
+      rowKey="id"
       :showPagination="false"
-      :columns="columns" 
+      :columns="columns"
       :data="loadData">
 
       <template slot="helpQuestion" slot-scope="text">
@@ -32,7 +32,6 @@
       </span>
     </s-table>
 
-
     <!--表单-->
     <a-modal
       title="问题编辑"
@@ -48,7 +47,7 @@
           :label-col="{ span: 5 }"
           :wrapper-col="{ span: 17 }"
         >
-        <!-- rules: [{ required: true, message: '请输入问题' }], -->
+          <!-- rules: [{ required: true, message: '请输入问题' }], -->
           <a-textarea
             :style="{height: '120px'}"
             placeholder="在此输入问题"
@@ -65,7 +64,7 @@
           :label-col="{ span: 5 }"
           :wrapper-col="{ span: 17 }"
         >
-         <!-- rules: [{ required: true, message: '请输入答案' }], -->
+          <!-- rules: [{ required: true, message: '请输入答案' }], -->
           <a-textarea
             :style="{height: '120px'}"
             v-decorator="[
@@ -82,7 +81,7 @@
           :label-col="{ span: 5 }"
           :wrapper-col="{ span: 17 }"
         >
-        <!-- rules: [{ required: true, message: '请输入链接' }], -->
+          <!-- rules: [{ required: true, message: '请输入链接' }], -->
           <a-textarea
             :style="{height: '40px'}"
             v-decorator="[
@@ -105,7 +104,7 @@ export default {
   name: 'Question',
   components: {
     STable,
-    Ellipsis,
+    Ellipsis
   },
   data () {
     return {
@@ -114,7 +113,7 @@ export default {
       showEdit: false,
       formLayout: 'horizontal',
       form: this.$form.createForm(this),
-      data: [ 
+      data: [
       ],
       columns: [
         {
@@ -166,9 +165,9 @@ export default {
           const data = await editHelp({
             ...values,
             id: this.question.id
-          });
+          })
 
-          if(data.status === 200){
+          if (data.status === 200) {
             this.showEdit = false
             this.$refs.table.refresh()
           }

@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { STable } from '@/components'
 import { getProductOrderList } from '@/api/manage'
 export default {
@@ -62,11 +61,11 @@ export default {
         {
           title: '被投保人性别',
           dataIndex: 'sex',
-          customRender: text =>  ({1: '男', 0: '女'})[text]
+          customRender: text => ({ 1: '男', 0: '女' })[text]
         },
         {
           title: '年龄',
-          dataIndex: 'age',
+          dataIndex: 'age'
         },
         {
           title: '保额',
@@ -84,11 +83,11 @@ export default {
       loadData: parameter => {
         let startTime
         let endTime
-        if(Array.isArray(this.queryParam.date)){
-          startTime = this.queryParam.date[0].format('YYYY-MM-DD hh:mm:ss')
-          endTime = this.queryParam.date[1].format('YYYY-MM-DD hh:mm:ss')
+        if (Array.isArray(this.queryParam.date) && this.queryParam.date.length > 0) {
+          startTime = this.queryParam.date[0].format('YYYY-MM-DD')
+          endTime = this.queryParam.date[1].format('YYYY-MM-DD')
         }
-        
+
         delete this.queryParam.date
         return getProductOrderList(
           Object.assign(parameter, this.queryParam, {
@@ -96,13 +95,13 @@ export default {
             endTime
           })
         )
-        .then(res => {
-          return {
-            data: res.data,
-            pageNo: res.pageNo,
-            totalCount: res.count
-          }
-        })
+          .then(res => {
+            return {
+              data: res.data,
+              pageNo: res.pageNo,
+              totalCount: res.count
+            }
+          })
       }
     }
   },
