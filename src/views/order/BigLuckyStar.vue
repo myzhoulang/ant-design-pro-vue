@@ -11,8 +11,9 @@
             </a-col>
             <a-col :md="8" :sm="24">
               <span class="table-page-search-submitButtons">
-                <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
+                <a-button type="primary" :style="{marginRight: '15px'}" @click="$refs.table.refresh(true)">查询</a-button>
                 <!-- <a-button style="margin-left: 8px" icon="download">导出</a-button> -->
+                <Download name="大福星."/>
               </span>
             </a-col>
           </a-row>
@@ -22,7 +23,7 @@
       <s-table
         ref="table"
         size="default"
-        rowKey="key"
+        rowKey="id"
         :columns="columns"
         :data="loadData"
       >
@@ -37,12 +38,13 @@
 </template>
 
 <script>
-import { STable } from '@/components'
+import { STable, Download } from '@/components'
 import { getProductOrderList } from '@/api/manage'
 export default {
   name: 'BigLuckyStar',
   components: {
-    STable
+    STable,
+    Download
   },
   data () {
     return {
