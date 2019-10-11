@@ -103,8 +103,8 @@ export default {
   methods: {
     dateChange (dates = []) {
       this.date = {
-        startTime: dates[0].format('YYYY-MM-DD'),
-        endTime: dates[1].format('YYYY-MM-DD')
+        startTime: dates[0] && dates[0].format('YYYY-MM-DD'),
+        endTime: dates[1] && dates[1].format('YYYY-MM-DD')
       }
     }
   }
