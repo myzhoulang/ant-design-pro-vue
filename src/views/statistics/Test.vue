@@ -6,13 +6,19 @@
           <a-row :gutter="48">
             <a-col :md="12" :xl="10" :xxl="6" :sm="24">
               <a-form-item label="时间范围">
-                <a-range-picker v-model="queryParam.date" style="width: 100%"/>
+                <a-range-picker @change="dateChange" v-model="queryParam.date" style="width: 100%"/>
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
               <span class="table-page-search-submitButtons">
-                <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
-                <!-- <a-button style="margin-left: 8px" icon="download">导出</a-button> -->
+                <a-button
+                  type="primary"
+                  @click="$refs.table.refresh(true)"
+                  style="margin-right: 15px;">查询</a-button>
+                <Download
+                  name="测试答案选择统计.xls"
+                  :query="date"
+                  url="/button/click/exportClickTimeByQA.htm"/>
                 <!-- <a-button style="margin-left: 8px" icon="question-circle">字段说明</a-button> -->
               </span>
             </a-col>
@@ -34,17 +40,19 @@
 </template>
 
 <script>
-import { STable } from '@/components'
+import { STable, Download } from '@/components'
 import { getClickTimeByQA } from '@/api/manage'
 export default {
   name: 'Test',
   components: {
-    STable
+    STable,
+    Download
   },
   data () {
     return {
       // 查询参数
       queryParam: {},
+      date: {},
       // 表头
       columns: [
         {
@@ -100,7 +108,12 @@ export default {
     }
   },
   methods: {
-
+    dateChange (dates = []) {
+      this.date = {
+        startTime: dates[0].format('YYYY-MM-DD'),
+        endTime: dates[1].format('YYYY-MM-DD')
+      }
+    }
   }
 }
 </script>

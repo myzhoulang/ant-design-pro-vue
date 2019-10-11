@@ -17,7 +17,7 @@ export default {
     },
     name: {
       required: true,
-        type: String
+      type: String
     },
     url: {
       required: true,
