@@ -58,7 +58,7 @@ export default {
       columns: [
         {
           title: '下单时间',
-          dataIndex: 'no'
+          dataIndex: 'createDate'
         },
         {
           title: '被投保人',
@@ -67,7 +67,7 @@ export default {
         {
           title: '被投保人性别',
           dataIndex: 'sex',
-          customRender: text => ({ 1: '男', 0: '女' })[text]
+          customRender: text => ({ 1: '男', 2: '女' })[text]
         },
         {
           title: '年龄',
