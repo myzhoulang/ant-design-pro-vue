@@ -61,7 +61,7 @@ export default {
         },
         {
           title: '所属',
-          dataIndex: ''
+          dataIndex: 'parentName'
         },
         {
           title: '累计数量',
