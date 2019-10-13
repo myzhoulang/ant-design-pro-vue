@@ -1,5 +1,5 @@
 <template>
-  <a-button type="primary" @click="download" :icon="icon">{{ title }}</a-button>
+  <a-button :disabled="exporting" :loading="exporting" type="primary" @click="download" :icon="icon">{{ title }}</a-button>
 </template>
 
 <script>
@@ -30,11 +30,19 @@ export default {
       }
     }
   },
+  data(){
+    return {
+      exporting: false
+    }
+  },
   methods: {
     download () {
+      this.exporting = true
       axios
         .post(this.url, {}, { params: this.query, responseType: 'arraybuffer',  headers: { 'content-type': 'application/x-www-form-urlencoded' } })
         .then(data => jsFileDownload(data, this.name))
+        .catch(e => this.$message.error(e.message))
+        .finally(() => this.exporting = false)
     }
   }
 }

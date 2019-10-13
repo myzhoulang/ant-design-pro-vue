@@ -46,8 +46,13 @@ export default {
   data () {
     return {
       // 查询参数
-      queryParam: {},
-      date: {},
+      queryParam: {
+        date: [moment(), moment()]
+      },
+      date: {
+        startTime: moment().format('YYYY-MM-DD'),
+        endTime: moment().format('YYYY-MM-DD'),
+      },
       // 表头
       columns: [
         {
@@ -84,13 +89,18 @@ export default {
           endTime = this.queryParam.date[1].format('YYYY-MM-DD')
         }
 
-        delete this.queryParam.date
         return getAppUserList(
-          Object.assign(parameter, this.queryParam, {
+          Object.assign(parameter, {
             startTime,
             endTime
           })
         ).then(res => {
+          this.$router.push({
+            query: {
+              startTime,
+              endTime
+            }
+          })
           return {
             data: res.data,
             pageNo: res.pageNo,
@@ -99,6 +109,15 @@ export default {
         })
       }
     }
+  },
+  created(){
+    const {query} = this.$route;
+    this.queryParam.date = [
+      moment(query.startTime),
+      moment(query.endTime)
+    ]
+    this.date.startTime = query.startTime
+    this.date.endTime = query.endTime
   },
   methods: {
     dateChange (dates = []) {

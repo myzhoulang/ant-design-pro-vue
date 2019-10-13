@@ -6,30 +6,25 @@
           <a-row :gutter="48">
             <a-col :md="12" :xl="10" :xxl="6" :sm="24">
               <a-form-item label="时间范围">
-                <a-range-picker @change="dateChange" v-model="queryParam.date" style="width: 100%"/>
+                <a-range-picker @change="dateChange" v-model="queryParam.date" style="width: 100%" />
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
               <span class="table-page-search-submitButtons">
-                <a-button type="primary" :style="{marginRight: '15px'}" @click="$refs.table.refresh(true)">查询</a-button>
+                <a-button
+                  type="primary"
+                  :style="{marginRight: '15px'}"
+                  @click="$refs.table.refresh(true)"
+                >查询</a-button>
                 <!-- <a-button style="margin-left: 8px" icon="download">导出</a-button> -->
-                <Download
-                  name="大福星.xls"
-                  :query="date"
-                  url="/order/exportProductOrderList.htm"/>
+                <Download name="大福星.xls" :query="date" url="/order/exportProductOrderList.htm" />
               </span>
             </a-col>
           </a-row>
         </a-form>
       </div>
 
-      <s-table
-        ref="table"
-        size="default"
-        rowKey="id"
-        :columns="columns"
-        :data="loadData"
-      >
+      <s-table ref="table" size="default" rowKey="id" :columns="columns" :data="loadData">
         <span slot="action" slot-scope="text, record">
           <template>
             <a @click="handleEdit(record)">详情</a>
@@ -41,6 +36,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import { STable, Download } from '@/components'
 import { getProductOrderList } from '@/api/manage'
 export default {
@@ -49,7 +45,7 @@ export default {
     STable,
     Download
   },
-  data () {
+  data() {
     return {
       // 查询参数
       queryParam: {},
@@ -67,7 +63,7 @@ export default {
         {
           title: '被投保人性别',
           dataIndex: 'sex',
-          customRender: text => ({ 1: '男', 2: '女' })[text]
+          customRender: text => ({ 1: '男', 2: '女' }[text])
         },
         {
           title: '年龄',
@@ -94,25 +90,35 @@ export default {
           endTime = this.queryParam.date[1].format('YYYY-MM-DD')
         }
 
-        delete this.queryParam.date
         return getProductOrderList(
-          Object.assign(parameter, this.queryParam, {
+          Object.assign(parameter, {
             startTime,
             endTime
           })
-        )
-          .then(res => {
-            return {
-              data: res.data,
-              pageNo: res.pageNo,
-              totalCount: res.count
+        ).then(res => {
+          this.$router.push({
+            query: {
+              startTime,
+              endTime
             }
           })
+          return {
+            data: res.data,
+            pageNo: res.pageNo,
+            totalCount: res.count
+          }
+        })
       }
     }
   },
+  created() {
+    const { query } = this.$route
+    this.queryParam.date = [moment(query.startTime), moment(query.endTime)]
+    this.date.startTime = query.startTime
+    this.date.endTime = query.endTime
+  },
   methods: {
-    dateChange (dates = []) {
+    dateChange(dates = []) {
       this.date = {
         startTime: dates[0] && dates[0].format('YYYY-MM-DD'),
         endTime: dates[1] && dates[1].format('YYYY-MM-DD')
@@ -123,5 +129,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
